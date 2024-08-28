@@ -6,11 +6,11 @@ import seaborn as sns
 import plotly.express as px
 import matplotlib.pyplot as plt
 
-# Load your model, scaler, and encoder
+# Load model, scaler, and encoder
 model_path = './model.pkl'
 encoder_path = './encoder.pkl'
 scaler_path = './scaler.pkl'
-csv_path = './property_listings.csv'
+csv_path = './data_cleaned.csv'
 
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
@@ -68,7 +68,6 @@ if st.button('Predict'):
     st.header('Visualization')
     st.subheader('Property Price in Egypt vs. Predicted Price')
 
-    # Assuming you have your data in a DataFrame and want to compare area vs. predicted price
     data = pd.read_csv(csv_path)
     data['predicted_price'] = predicted_price
     st.scatter_chart(data[['price_in_million', 'predicted_price']])
