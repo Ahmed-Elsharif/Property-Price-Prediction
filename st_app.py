@@ -31,7 +31,7 @@ cities = {
     'Red Sea': ['Hurghada', 'El Gouna', 'Sahl Hasheesh'],
     'Suez': ['Suez', 'Ain Sokhna']
 }
-
+predicted_price = 0
 def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city):
     # Create a DataFrame for the input data
     new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city]],
@@ -49,6 +49,16 @@ def predict_price(area, bedroom_number, bathroom_number, property_type, governor
     # Create a DataFrame for the combined features 
     feature_names = (list(new_data[['area', 'bedroom_number', 'bathroom_number']].columns) +
                      list(encoder.get_feature_names_out(['property_type', 'governorate', 'City'])))
+
+    new_data_prepared = pd.DataFrame(combined_features, columns=feature_names)
+
+   
+    prediction = model.predict(new_data_prepared)
+    return prediction
+
+
+# Streamlit app
+    list(encoder.get_feature_names_out(['property_type', 'governorate', 'City'])))
 
     new_data_prepared = pd.DataFrame(combined_features, columns=feature_names)
 
