@@ -48,9 +48,9 @@ def predict_price(area, bedroom_number, bathroom_number, property_type, governor
 # Streamlit app layout
 st.title('Property Price Prediction')
 
-area = st.number_input('Area (in square meters):', min_value=1)
-bedroom_number = st.number_input('Number of Bedrooms:', min_value=1, max_value=10)
-bathroom_number = st.number_input('Number of Bathrooms:', min_value=1, max_value=10)
+area = st.number_input('Area (in square meters):', min_value=20)
+bedroom_number = st.number_input('Number of Bedrooms:', min_value=1, max_value=7)
+bathroom_number = st.number_input('Number of Bathrooms:', min_value=1, max_value=7)
 property_type = st.selectbox('Property Type:', ['Apartment', 'Chalet', 'Duplex', 'Penthouse', 'Townhouse', 'Twin House', 'Villa'])
 governorate = st.selectbox('Governorate:', list(cities.keys()))
 
@@ -69,6 +69,6 @@ if st.button('Predict'):
     st.subheader('Property Price in Egypt vs. Predicted Price')
 
     data = pd.read_csv(csv_path)
-    data['predicted_price'] = predicted_price
+    data['predicted_price'] = predicted_price[0]
     st.scatter_chart(data[['price_in_million', 'predicted_price']])
 
