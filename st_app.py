@@ -7,10 +7,10 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 
 # Define paths to files
-model_path = r'E:\Epsilon\code2\final project\model.pkl'
-encoder_path = r'E:\Epsilon\code2\final project\encoder.pkl'
-scaler_path = r'E:\Epsilon\code2\final project\scaler.pkl'
-csv_path = r'E:\Epsilon\code2\final project\data_cleaned.csv'
+model_path = './model.pkl'
+encoder_path = './encoder.pkl'
+scaler_path = './Escaler.pkl'
+csv_path = './data_cleaned.csv'
 
 # Load your model, scaler, and encoder
 with open(model_path, 'rb') as f:
