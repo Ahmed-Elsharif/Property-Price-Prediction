@@ -22,6 +22,8 @@ with open(scaler_path, 'rb') as f:
 with open(encoder_path, 'rb') as f:  
     encoder = pickle.load(f)
 
+#  DataFrame
+data = pd.read_csv(csv_path)
 # Define the cities dictionary
 cities = {
     'Cairo': ['Hay Sharq', 'Hay El Maadi', 'Mokattam', 'Mostakbal City', 'Future City', 'New Cairo City', 'New Capital City', 'New Heliopolis', 'Shorouk City', 'Madinaty', '6 October City', 'Sheikh Zayed City'],
@@ -31,7 +33,7 @@ cities = {
     'Red Sea': ['Hurghada', 'El Gouna', 'Sahl Hasheesh'],
     'Suez': ['Suez', 'Ain Sokhna']
 }
-predicted_price = []
+data['predicted_price'] = [0]
 def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city):
     # Create a DataFrame for the input data
     new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city]],
@@ -79,8 +81,7 @@ if st.button('Predict'):
     predicted_price = predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city)
     st.write(f'The predicted price is: ${predicted_price[0]:.2f}')
 
-#  DataFrame
-data = pd.read_csv(csv_path)
+
 # Visualization 
 st.header('Visualization')
 st.subheader('Property Price in Egypt vs. predicted_price')
