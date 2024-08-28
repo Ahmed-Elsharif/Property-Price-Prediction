@@ -33,7 +33,7 @@ cities = {
     'Red Sea': ['Hurghada', 'El Gouna', 'Sahl Hasheesh'],
     'Suez': ['Suez', 'Ain Sokhna']
 }
-data['predicted_price'] = [0]
+data['predicted_price'] = 0
 def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city):
     # Create a DataFrame for the input data
     new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city]],
