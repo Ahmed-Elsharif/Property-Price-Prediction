@@ -58,16 +58,6 @@ def predict_price(area, bedroom_number, bathroom_number, property_type, governor
 
 
 # Streamlit app
-    list(encoder.get_feature_names_out(['property_type', 'governorate', 'City'])))
-
-    new_data_prepared = pd.DataFrame(combined_features, columns=feature_names)
-
-   
-    prediction = model.predict(new_data_prepared)
-    return prediction
-
-
-# Streamlit app
 st.title('Property Price Prediction')
 
 st.header('Enter the details below:')
