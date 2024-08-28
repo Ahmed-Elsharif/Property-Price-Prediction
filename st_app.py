@@ -48,7 +48,7 @@ def predict_price(area, bedroom_number, bathroom_number, property_type, governor
 # Streamlit app layout
 st.title('Property Price Prediction')
 
-area = st.number_input('Area (in square meters):', min_value=25)
+area = st.number_input('Area (in square meters):', min_value=30)
 bedroom_number = st.number_input('Number of Bedrooms:', min_value=1, max_value=7)
 bathroom_number = st.number_input('Number of Bathrooms:', min_value=1, max_value=7)
 property_type = st.selectbox('Property Type:', ['Apartment', 'Chalet', 'Duplex', 'Penthouse', 'Townhouse', 'Twin House', 'Villa'])
