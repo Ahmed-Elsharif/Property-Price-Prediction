@@ -33,6 +33,8 @@ cities = {
     'Red Sea': ['Hurghada', 'El Gouna', 'Sahl Hasheesh'],
     'Suez': ['Suez', 'Ain Sokhna']
 }
+
+
 def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city):
     # Create a DataFrame for the input data
     new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city]],
@@ -77,10 +79,8 @@ else:
     city = st.selectbox('City:', [])
 
 if st.button('Predict'):
-    global predicted_price
     predicted_price = predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city)
     st.write(f'The predicted price is: ${predicted_price[0]:.2f}')
-
 
 # Visualization 
 st.header('Visualization')
