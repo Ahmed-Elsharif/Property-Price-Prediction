@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # Define paths to files
 model_path = './model.pkl'
 encoder_path = './encoder.pkl'
-scaler_path = './Escaler.pkl'
+scaler_path = './scaler.pkl'
 csv_path = './data_cleaned.csv'
 
 # Load your model, scaler, and encoder
