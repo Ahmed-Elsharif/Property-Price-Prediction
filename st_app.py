@@ -69,6 +69,6 @@ if st.button('Predict'):
     st.subheader('Property Price in Egypt vs. Predicted Price')
 
     data = pd.read_csv(csv_path)
-    data['predicted_price'] = predicted_price[0]
+    data['predicted_price'] = predicted_price
     st.scatter_chart(data[['price_in_million', 'predicted_price']])
 
