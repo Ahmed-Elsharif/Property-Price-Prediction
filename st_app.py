@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
+import seaborn as sns
+import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Load model, scaler, and encoder
 model_path = './model.pkl'
@@ -18,118 +21,23 @@ with open(encoder_path, 'rb') as f:
 with open(scaler_path, 'rb') as f:
     scaler = pickle.load(f)
 
-# Define the hierarchical dictionary
+# Define the cities dictionary
 cities = {
-    'Cairo': {
-        'Hay El Maadi': {
-            'Zahraa El Maadi': ['2nd Sector', '90 Avenue'],
-            'South Investors Area': ['9th District', 'Aeon']
-        },
-        'New Cairo City': {
-            'The 5th Settlement': ['Al Rabwa', 'Al Andalus Buildings'],
-            'The 1st Settlement': ['Al Gouna', 'Al Hadaba Al Wosta']
-        },
-        'Mokattam': {
-            'Al Hadaba Al Wosta': ['District 1', 'District 5'],
-            'Faisal': ['El Motamayez District', 'El Narges Buildings']
-        },
-        'Mostakbal City': {
-            'Mostakbal City Compounds': ['Capital Gardens   Palm Hills', 'City Gate']
-        },
-        'Shorouk City': {
-            'El Shorouk Compounds': ['Al Bostan St.', 'Creek Town']
-        },
-        'Madinaty': {
-            'Madinaty': ['Madinaty 1', 'Madinaty 2']
-        },
-        'New Capital City': {
-            'New Capital Compounds': ['District 5 Residences', 'District 1']
-        },
-        'New Heliopolis': {
-            'New Narges': ['North Rehab', 'North Lotus']
-        },
-        '6 October City': {
-            '9th District': ['Al Wahat Road', 'Al Gouna'],
-            '6 October Compounds': ['Cairo Alexandria Desert Road', 'Al Khamayel city']
-        },
-        'Sheikh Zayed City': {
-            'Sheikh Zayed Compounds': ['Beverly Hills', 'Blanca Gardens'],
-            'Green Belt': ['Aeon', 'Al Karma 4']
-        }
-    },
-    'Giza': {
-        '6 October City': {
-            '9th District': ['Al Wahat Road', 'Al Gouna'],
-            '6 October Compounds': ['Cairo Alexandria Desert Road', 'Al Khamayel city']
-        },
-        'Sheikh Zayed City': {
-            'Sheikh Zayed Compounds': ['Beverly Hills', 'Blanca Gardens'],
-            'Green Belt': ['Aeon', 'Al Karma 4']
-        },
-        'Kafr El Sheikh': {
-            'Al Wahat Road': ['Palm Hills', 'Fifth Square'],
-            'Downtown': ['Eastown', 'Cairo Festival City']
-        },
-        'El Giza': {
-            'Hadayek El Ahram': ['North Investors Area', 'South Investors Area']
-        }
-    },
-    'Alexandria': {
-        'Alexandria': {
-            'Alex West': ['Alex West Compound', 'Al Wahat Road'],
-            'Al Andalus District': ['Zahra Al Maadi', 'Zahra Al Mansoura']
-        },
-        'Kafr El Sheikh': {
-            'El Gouna': ['El Kawther District', 'El Narges Buildings']
-        }
-    },
-    'North Coast': {
-        'Marina': {
-            'Marina 1': ['Palm Hills', 'Fifth Square'],
-            'Marina 5': ['Eastown', 'Cairo Festival City']
-        },
-        'Sidi Abdel Rahman': {
-            'Hacienda Bay': ['Hacienda Bay', 'Hacienda White'],
-            'Marassi': ['Marassi 1', 'Marassi 2']
-        },
-        'Al Alamein': {
-            'New Alamein City': ['Mazarine', 'Seashore'],
-            'Sidi Abdel Rahman': ['Fouka Bay', 'Gaia']
-        }
-    },
-    'Red Sea': {
-        'Hurghada': {
-            'Al Ahyaa District': ['El Gouna', 'El Kawther District'],
-            'El Hadaba Al Wosta': ['El Motamayez District', 'El Narges Buildings']
-        },
-        'El Gouna': {
-            'El Gouna Compounds': ['Al Hadaba Al Wosta', 'Faisal'],
-            'El Kawther District': ['Palm Hills', 'Fifth Square']
-        },
-        'Sahl Hasheesh': {
-            'Sahl Hasheesh Resorts': ['El Hadaba Al Wosta', 'Faisal'],
-            'El Kawther District': ['Palm Hills', 'Fifth Square']
-        }
-    },
-    'Suez': {
-        'Suez': {
-            'Al Wahat Road': ['Palm Hills', 'Fifth Square'],
-            'Downtown': ['Eastown', 'Cairo Festival City']
-        },
-        'Ain Sokhna': {
-            'Azha North': ['Telal Al Sokhna', 'La Vista Gardens'],
-            'Palm Hills': ['Al Wahat Road', 'Al Karma 4']
-        }
-    }
+    'Cairo': ['Hay Sharq', 'Hay El Maadi', 'Mokattam', 'Mostakbal City', 'Future City', 'New Cairo City', 'New Capital City', 'New Heliopolis', 'Shorouk City', 'Madinaty', '6 October City', 'Sheikh Zayed City'],
+    'Giza': ['6 October City', 'Sheikh Zayed City', 'Kafr El Sheikh', 'El Giza'],
+    'Alexandria': ['Alexandria', 'Kafr El Sheikh'],
+    'North Coast': ['Marina', 'Sidi Abdel Rahman', 'Al Alamein'],
+    'Red Sea': ['Hurghada', 'El Gouna', 'Sahl Hasheesh'],
+    'Suez': ['Suez', 'Ain Sokhna']
 }
 
 # Function to make predictions
-def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city, sub_city, location, address):
+def predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city):
     # Prepare the data for prediction
-    new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city, sub_city, location, address]],
-                            columns=['area', 'bedroom_number', 'bathroom_number', 'property_type', 'governorate', 'City', 'SubCity', 'Location', 'Address'])
+    new_data = pd.DataFrame([[area, bedroom_number, bathroom_number, property_type, governorate, city]],
+                            columns=['area', 'bedroom_number', 'bathroom_number', 'property_type', 'governorate', 'City'])
 
-    new_data_encoded = encoder.transform(new_data[['property_type', 'governorate', 'City', 'SubCity', 'Location', 'Address']])
+    new_data_encoded = encoder.transform(new_data[['property_type', 'governorate', 'City']])
     new_data_scaled = scaler.transform(new_data[['area', 'bedroom_number', 'bathroom_number']])
     combined_features = np.hstack((new_data_scaled, new_data_encoded.toarray()))
 
@@ -147,22 +55,13 @@ property_type = st.selectbox('Property Type:', ['Apartment', 'Chalet', 'Duplex',
 governorate = st.selectbox('Governorate:', list(cities.keys()))
 
 if governorate:
-    city = st.selectbox('City:', list(cities[governorate].keys()))
-    if city:
-        sub_city = st.selectbox('Sub-City:', list(cities[governorate][city].keys()))
-        if sub_city:
-            location = st.selectbox('Location:', list(cities[governorate][city][sub_city].keys()))
-            if location:
-                address = st.selectbox('Address:', cities[governorate][city][sub_city][location])
+    city = st.selectbox('City:', cities[governorate])
 else:
     city = st.selectbox('City:', [])
-    sub_city = st.selectbox('Sub-City:', [])
-    location = st.selectbox('Location:', [])
-    address = st.selectbox('Address:', [])
 
 # Prediction and Visualization
 if st.button('Predict'):
-    predicted_price = predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city, sub_city, location, address)
+    predicted_price = predict_price(area, bedroom_number, bathroom_number, property_type, governorate, city)
     st.write(f'The predicted price in million is: EGP{predicted_price:.2f}')
 
     # Visualization
@@ -172,3 +71,4 @@ if st.button('Predict'):
     data = pd.read_csv(csv_path)
     data['predicted_price'] = predicted_price
     st.scatter_chart(data[['price_in_million', 'predicted_price']])
+
